@@ -17,14 +17,26 @@ const App: React.FC = () => {
   const [page, setPage] = useState(1);
   const [error, setError] = useState("");
 
+  // Access Key from environment variable
+  const ACCESS_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
+
   const fetchImages = async (searchQuery: string, page: number) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`https://api.unsplash.com/search/photos?query=${searchQuery}&page=${page}&client_id=YOUR_ACCESS_KEY`);
+      const response = await fetch(
+        `https://api.unsplash.com/search/photos?query=${searchQuery}&page=${page}&client_id=${ACCESS_KEY}`
+      );
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
       const data = await response.json();
-      setImages((prevImages) => [...prevImages, ...data.results]);
+      if (data.results && Array.isArray(data.results)) {
+        setImages((prevImages) => [...prevImages, ...data.results]);
+      } else {
+        throw new Error("Unexpected response format from API");
+      }
     } catch (err) {
-      setError("Failed to fetch images");
+      setError(err.message || "An error occurred");
     } finally {
       setIsLoading(false);
     }
