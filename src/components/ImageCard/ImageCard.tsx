@@ -1,14 +1,5 @@
-import styles from "./ImageCard.module.css";
-import ImageCard from "../ImageCard/ImageCard";
-
-
-interface Image {
-  urls: {
-    small: string;
-    full: string;
-  };
-  alt_description: string;
-}
+import React from "react";
+import { Image } from "../../types/Image";
 
 interface ImageCardProps {
   image: Image;
@@ -18,14 +9,9 @@ interface ImageCardProps {
 const ImageCard: React.FC<ImageCardProps> = ({ image, onImageClick }) => {
   const { urls, alt_description } = image;
 
-  if (!urls || !urls.small) {
-    console.error("Image URLs are missing", image);
-    return null;
-  }
-
   return (
-    <div className={styles.card} onClick={() => onImageClick(image)}>
-      <img src={urls.small} alt={alt_description} className={styles.image} />
+    <div onClick={() => onImageClick(image)}>
+      <img src={urls.small} alt={alt_description || "No description"} />
     </div>
   );
 };
