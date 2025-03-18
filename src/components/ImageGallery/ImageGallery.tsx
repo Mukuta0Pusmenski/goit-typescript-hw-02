@@ -1,7 +1,4 @@
 import { Image } from "../../types/Image";
-import styles from "./ImageGallery.module.css";
-import ImageCard from "../ImageCard/ImageCard";
-
 
 interface ImageGalleryProps {
   images: Image[];

@@ -4,5 +4,5 @@ export interface Image {
     small: string;
     full: string;
   };
-  alt_description?: string; // Зроблено опціональним
+  alt_description?: string; // `?` означає, що це поле опціональне
 }
