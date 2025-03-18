@@ -8,6 +8,9 @@ import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import { Image } from "./types/Image";
 
+// Пряме вбудовування API ключа (НЕБЕЗПЕЧНО для публічних репозиторіїв)
+const ACCESS_KEY = "m7VpIulhYuqJcmrdPt8_Z2ewSUJfZ08bhvd6TZdl8-Q";
+
 const App: React.FC = () => {
   const [query, setQuery] = useState<string | undefined>(undefined);
   const [images, setImages] = useState<Image[]>([]);
@@ -17,35 +20,31 @@ const App: React.FC = () => {
   const [page, setPage] = useState(1);
   const [error, setError] = useState("");
 
-  // Access Key from environment variable
-  const ACCESS_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
-
-const fetchImages = async (searchQuery: string, page: number) => {
-  setIsLoading(true);
-  try {
-    const response = await fetch(
-      `https://api.unsplash.com/search/photos?query=${searchQuery}&page=${page}&client_id=${ACCESS_KEY}`
-    );
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
+  const fetchImages = async (searchQuery: string, page: number) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `https://api.unsplash.com/search/photos?query=${searchQuery}&page=${page}&client_id=${ACCESS_KEY}`
+      );
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+      const data = await response.json();
+      if (data.results && Array.isArray(data.results)) {
+        setImages((prevImages) => [...prevImages, ...data.results]);
+      } else {
+        throw new Error("Unexpected response format from API");
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
+    } finally {
+      setIsLoading(false);
     }
-    const data = await response.json();
-    if (data.results && Array.isArray(data.results)) {
-      setImages((prevImages) => [...prevImages, ...data.results]);
-    } else {
-      throw new Error("Unexpected response format from API");
-    }
-  } catch (err) {
-    if (err instanceof Error) {
-      setError(err.message);
-    } else {
-      setError("An unknown error occurred");
-    }
-  } finally {
-    setIsLoading(false);
-  }
-};
-
+  };
 
   const handleSearchSubmit = (searchQuery: string) => {
     setQuery(searchQuery);
