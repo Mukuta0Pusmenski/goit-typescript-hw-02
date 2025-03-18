@@ -7,7 +7,7 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
-  const [query, setQuery] = useState<string>("");
+  const [query, setQuery] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -15,25 +15,18 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSubmit }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (query.trim() === "") {
-      toast.error("Please enter a search term");
+    if (!query.trim()) {
+      toast.error("Please enter a valid search term");
       return;
     }
-    onSubmit(query);
+    onSubmit(query.trim());
     setQuery("");
   };
 
   return (
     <header className={styles.header}>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          autoComplete="off"
-          autoFocus
-          placeholder="Search images and photos"
-          value={query}
-          onChange={handleInputChange}
-        />
+        <input type="text" value={query} onChange={handleInputChange} />
         <button type="submit">Search</button>
       </form>
       <Toaster />

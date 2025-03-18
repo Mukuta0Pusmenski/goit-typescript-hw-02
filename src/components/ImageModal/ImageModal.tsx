@@ -1,11 +1,5 @@
 import Modal from "react-modal";
-
-interface Image {
-  urls: {
-    full: string;
-  };
-  alt_description?: string;
-}
+import { Image } from "../../types/Image";
 
 interface ImageModalProps {
   isOpen: boolean;
@@ -14,29 +8,12 @@ interface ImageModalProps {
 }
 
 const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onRequestClose, image }) => {
-  const customStyles = {
-    content: {
-      // CSS стилі (можеш залишити, як у тебе)
-    },
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.75)",
-    },
-  };
-
-  if (!image || !image.urls || !image.urls.full) {
-    return null;
-  }
+  if (!image) return null;
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      style={customStyles}
-      contentLabel="Image Modal"
-      ariaHideApp={false}
-    >
-      <button onClick={onRequestClose}>Close</button>
+    <Modal isOpen={isOpen} onRequestClose={onRequestClose}>
       <img src={image.urls.full} alt={image.alt_description} />
+      <button onClick={onRequestClose}>Close</button>
     </Modal>
   );
 };
