@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import styles from "./App.module.css";
+import SearchBar from "./components/SearchBar/SearchBar";
+import ImageGallery from "./components/ImageGallery/ImageGallery";
+import ImageModal from "./components/ImageModal/ImageModal";
+import Loader from "./components/Loader/Loader";
+import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
+import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface Image {
+  id: string;
+  urls: {
+    small: string;
+    full: string;
+  };
+  alt_description: string;
 }
 
-export default App
+const App: React.FC = () => {
+  const [query, setQuery] = useState<string>("");
+  const [images, setImages] = useState<Image[]>([]);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [error, setError] = useState<string>("");
+
+  const fetchImages = async (searchQuery: string, page: number) => {
+    // Запит до API
+  };
+
+  const handleSearchSubmit = (searchQuery: string) => {
+    // Логіка пошуку
+  };
+
+  const handleImageClick = (image: Image) => {
+    // Логіка відкриття модального вікна
+  };
+
+  const closeModal = () => {
+    // Логіка закриття модального вікна
+  };
+
+  const loadMoreImages = () => {
+    // Логіка завантаження додаткових зображень
+  };
+
+  return (
+    <div className={styles.App}>
+      <SearchBar onSubmit={handleSearchSubmit} />
+      {isLoading && <Loader />}
+      {error && <ErrorMessage message={error} />}
+      <ImageGallery images={images} onImageClick={handleImageClick} />
+      {images.length > 0 && !isLoading && <LoadMoreBtn onClick={loadMoreImages} />}
+      <ImageModal isOpen={isModalOpen} onRequestClose={closeModal} image={selectedImage} />
+    </div>
+  );
+};
+
+export default App;
