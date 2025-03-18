@@ -1,4 +1,6 @@
 import styles from "./ImageCard.module.css";
+import ImageCard from "../ImageCard/ImageCard";
+
 
 interface Image {
   urls: {
