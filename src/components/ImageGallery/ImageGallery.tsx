@@ -1,5 +1,3 @@
-import styles from "./ImageGallery.module.css";
-import ImageCard from "../ImageCard/ImageCard";
 import { Image } from "../../types/Image";
 
 interface ImageGalleryProps {
@@ -7,12 +5,7 @@ interface ImageGalleryProps {
   onImageClick: (image: Image) => void;
 }
 
-
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, onImageClick }) => {
-  if (images.length === 0) {
-    return null;
-  }
-
   return (
     <ul className={styles.gallery}>
       {images.map((image) => (

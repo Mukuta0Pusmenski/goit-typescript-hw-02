@@ -4,5 +4,5 @@ export interface Image {
     small: string;
     full: string;
   };
-  alt_description?: string; // Додай `?`, щоб вказати, що це поле може бути відсутнім
+  alt_description?: string; // Зроблено опціональним
 }
